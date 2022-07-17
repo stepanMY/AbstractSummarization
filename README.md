@@ -1,2 +1,2 @@
 # AbstractSummarization
-The NLP project about text summarization
+The NLP project about text summarization.
