@@ -1,6 +1,7 @@
 from nltk.translate.bleu_score import corpus_bleu, SmoothingFunction
 from nltk.translate.chrf_score import corpus_chrf
 from rouge import Rouge
+from collections import Counter
 
 
 def bleu_score(y_true, y_pred, smoothing=True):
@@ -46,6 +47,25 @@ def rouge_score(y_true, y_pred):
     return scores_dict
 
 
+def calc_duplicate_n_grams_rate(y_pred):
+    """
+    Calculates weighted n-grams duplicate rate in references
+
+    @param y_pred: list of lists, true tokenized values
+    """
+    all_ngrams_count = Counter()
+    duplicate_ngrams_count = Counter()
+    for doc in y_pred:
+        for n in range(1, 5):
+            ngrams = [tuple(doc[i:i + n]) for i in range(len(doc) - n + 1)]
+            unique_ngrams = set(ngrams)
+            all_ngrams_count[n] += len(ngrams)
+            duplicate_ngrams_count[n] += len(ngrams) - len(unique_ngrams)
+    scores_dict = {n: duplicate_ngrams_count[n] / all_ngrams_count[n]
+                   if all_ngrams_count[n] else 0.0 for n in range(1, 5)}
+    return scores_dict
+
+
 def calc_metrics(y_true, y_pred):
     """
     Calculates corpus metrics
@@ -63,6 +83,10 @@ def calc_metrics(y_true, y_pred):
     metrics['rouge-1-f'] = rouge_scores['rouge-1']['f']
     metrics['rouge-2-f'] = rouge_scores['rouge-2']['f']
     metrics['rouge-l-f'] = rouge_scores['rouge-l']['f']
+    dup_scores = calc_duplicate_n_grams_rate(y_pred)
+    metrics['duplicate_ngrams'] = dup_scores
+    lengths = [len(i) for i in y_pred]
+    metrics['avg_length'] = sum(lengths) / len(lengths)
     return metrics
 
 
@@ -81,6 +105,10 @@ def print_corp_metrics(y_true, y_pred):
     print('Hyp Example:   ', metrics['hyp_example'])
     print('BLEU:     \t{:3.1f}'.format(metrics['bleu'] * 100.0))
     print('chrF:     \t{:3.1f}'.format(metrics['chrf'] * 100.0))
-    print("ROUGE-1-F:\t{:3.1f}".format(metrics['rouge-1-f'] * 100.0))
-    print("ROUGE-2-F:\t{:3.1f}".format(metrics['rouge-2-f'] * 100.0))
-    print("ROUGE-L-F:\t{:3.1f}".format(metrics['rouge-l-f'] * 100.0))
+    print('ROUGE-1-F:\t{:3.1f}'.format(metrics['rouge-1-f'] * 100.0))
+    print('ROUGE-2-F:\t{:3.1f}'.format(metrics['rouge-2-f'] * 100.0))
+    print('ROUGE-L-F:\t{:3.1f}'.format(metrics['rouge-l-f'] * 100.0))
+    print('Dup 1-grams:\t{:3.1f}'.format(metrics['duplicate_ngrams'][1] * 100.0))
+    print('Dup 2-grams:\t{:3.1f}'.format(metrics['duplicate_ngrams'][2] * 100.0))
+    print('Dup 3-grams:\t{:3.1f}'.format(metrics['duplicate_ngrams'][3] * 100.0))
+    print('Avg length:\t{:3.1f}'.format(metrics['avg_length']))
