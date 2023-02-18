@@ -1,4 +1,4 @@
-from Parser import AsyncParser
+from parsing.parser import AsyncParser
 from bs4 import BeautifulSoup
 
 
