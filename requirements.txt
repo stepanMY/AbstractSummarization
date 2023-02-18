@@ -1,0 +1,6 @@
+nltk>=3.6.1
+easy-rouge>=0.2.2
+razdel>=0.5.0
+beautifulsoup4>=4.9.3
+numpy>=1.21.1
+aiohttp>=3.8.1
