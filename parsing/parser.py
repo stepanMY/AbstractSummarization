@@ -5,8 +5,9 @@ nest_asyncio.apply()
 
 
 class AsyncParser:
-    """ Class that parses webpages asynchronously """
-
+    """
+    Class that parses webpages asynchronously
+    """
     def __init__(self,
                  urls,
                  process,
@@ -14,12 +15,12 @@ class AsyncParser:
                  n_retries=5,
                  retrywait=0.5):
         """
-        @param urls list of web addresses to parse
-        @param process function that accepts url and page text, handles it
+        @param urls: list, list of web addresses to parse
+        @param process: function, function that accepts url and page text, handles it
                and returns result
-        @param n_connections limit of simultaneously opened connections
-        @param n_retries number of possible retries
-        @param retrywait seconds to wait before retrying to reach url
+        @param n_connections: int, limit of simultaneously opened connections
+        @param n_retries: int, number of possible retries
+        @param retrywait: int, seconds to wait before retrying to reach url
         """
         self.urls = urls
         self.process = process
@@ -30,7 +31,12 @@ class AsyncParser:
         self.notreachedurls = []
 
     async def geturl(self, session, url):
-        """ Processes one url """
+        """
+        Processes one url
+
+        @param session: aiohttp.ClientSession, session client to use
+        @param url: string, url to process
+        """
         async with session.get(url) as resp:
             if resp.status == 200:
                 text_ = await resp.text()
@@ -44,8 +50,9 @@ class AsyncParser:
             return None
 
     async def geturls(self):
-        """ Processes all urls """
-
+        """
+        Processes all urls
+        """
         connector = aiohttp.TCPConnector(limit=self.n_connections)
         async with aiohttp.ClientSession(connector=connector) as session:
             tasks = []
@@ -56,12 +63,16 @@ class AsyncParser:
             return results
 
     def parse(self):
-        """ Start parsing job """
+        """
+        Start parsing job
+        """
         self.ranflag = True
         return asyncio.run(self.geturls())
 
     def notreached(self):
-        """ Returns list of not reached urls """
+        """
+        Returns list of not reached urls
+        """
         if self.ranflag:
             raise AttributeError('Didn\'t parse')
         return self.notreachedurls

@@ -4,3 +4,5 @@ razdel>=0.5.0
 beautifulsoup4>=4.9.3
 numpy>=1.21.1
 aiohttp>=3.8.1
+pandas>=1.2.4
+torch>=1.13.1

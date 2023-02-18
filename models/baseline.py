@@ -10,7 +10,6 @@ class FirstWorder:
     """
     Class that uses first n words of the abstract to make a prediction
     """
-
     def __init__(self, mode, n_words=0):
         """
         @param mode: string, 'mean' or 'median' or 'n'
@@ -31,6 +30,8 @@ class FirstWorder:
 
     def fit(self, x, y):
         """
+        Fit the model
+
         @param x: list of strings, abstracts
         @param y: list of strings, titles
         """
@@ -42,8 +43,9 @@ class FirstWorder:
 
     def predict(self, x):
         """
+        Predict titles of given x abstracts, returns list of lists (tokenized)
+
         @param x: list of strings, abstracts
-        returns list of lists (tokenized)
         """
         if self.optimal_length is None:
             raise NotFittedError('model was not fitted')
