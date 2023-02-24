@@ -6,3 +6,4 @@ numpy>=1.21.1
 aiohttp>=3.8.1
 pandas>=1.2.4
 torch>=1.13.1
+neptune-client>=0.16.18
