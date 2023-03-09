@@ -104,6 +104,10 @@ def calc_metrics(y_true, y_pred):
     metrics['ref_avg_length'] = sum(ref_lengths) / len(ref_lengths)
     hyp_lengths = [len(i) for i in y_pred]
     metrics['hyp_avg_length'] = sum(hyp_lengths) / len(hyp_lengths)
+    ref_empty_strings = [len(i) == 0 for i in y_true]
+    metrics['ref_empty_share'] = sum(ref_empty_strings) / len(ref_empty_strings)
+    hyp_empty_strings = [len(i) == 0 for i in y_pred]
+    metrics['hyp_empty_share'] = sum(hyp_empty_strings) / len(hyp_empty_strings)
     return metrics
 
 
@@ -134,3 +138,5 @@ def print_corp_metrics(y_true, y_pred):
     print('Hyp Dup 3-grams:{:3.1f}'.format(metrics['hyp_duplicate_ngrams'][3] * 100.0))
     print('Ref Avg length:\t{:3.1f}'.format(metrics['ref_avg_length']))
     print('Hyp Avg length:\t{:3.1f}'.format(metrics['hyp_avg_length']))
+    print('Ref Empty:\t{:3.1f}'.format(metrics['ref_empty_share'] * 100.0))
+    print('Hyp Empty:\t{:3.1f}'.format(metrics['hyp_empty_share'] * 100.0))
