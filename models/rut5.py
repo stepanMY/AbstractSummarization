@@ -23,7 +23,7 @@ class ruT5:
         @param tokenizer_params: dict, params for tokenizer initialization
         If None, uses default
         @param path_to_model: string, path to transformers model
-        @param path_to_checkpoint, string: path to model checkpoint
+        @param path_to_checkpoint: string, path to model checkpoint
         If None, doesn't load any checkpoint
         @param device: string, device to use
         """
@@ -92,7 +92,7 @@ class ruT5:
 
     def calc_params(self):
         """
-        Calculate number of parametes in the model
+        Calculate number of parameters in the model
         """
         n_params = sum(p.numel() for p in self.model.parameters())
         return n_params
