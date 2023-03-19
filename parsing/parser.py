@@ -32,7 +32,7 @@ class AsyncParser:
 
     async def geturl(self, session, url):
         """
-        Processes one url
+        Process one url
 
         @param session: aiohttp.ClientSession, session client to use
         @param url: string, url to process
@@ -51,7 +51,7 @@ class AsyncParser:
 
     async def geturls(self):
         """
-        Processes all urls
+        Process all urls
         """
         connector = aiohttp.TCPConnector(limit=self.n_connections)
         async with aiohttp.ClientSession(connector=connector) as session:
@@ -71,7 +71,7 @@ class AsyncParser:
 
     def notreached(self):
         """
-        Returns list of not reached urls
+        Return list of not reached urls
         """
         if self.ranflag:
             raise AttributeError('Didn\'t parse')
