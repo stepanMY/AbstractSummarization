@@ -3,6 +3,7 @@ import numpy as np
 import random
 from tqdm.auto import tqdm
 from ..util.tokenizator import tokenize_sentences
+import math
 
 
 class Trainer:
@@ -76,6 +77,7 @@ class Trainer:
         self.train_loss = []
         self.step_curr = 0
         self.train_curr, self.val_curr = 0, 0
+        self.train_step, self.val_step = None, None
         self.best_valmetrics = {metric: 0 for metric in self.metrics}
         self.was_saved = False
 
@@ -150,9 +152,11 @@ class Trainer:
         @param val_dataloader: pytorch dataloader, validation samples
         """
         self.model_shell.model.train()
+        self.train_step = math.floor(self.train_epoch*len(train_dataloader))
+        self.val_step = math.floor(self.val_epoch*len(train_dataloader))
         for epoch in range(self.epochs):
             for i, batch in enumerate(tqdm(train_dataloader)):
-                epoch_curr = (self.step_curr+1)/len(train_dataloader)
+                epoch_curr = self.step_curr/len(train_dataloader)
                 x, y = list(batch[0]), list(batch[1])
                 loss = self.model_shell.calc_loss(x, y)
                 self.optimizer.zero_grad()
@@ -160,11 +164,11 @@ class Trainer:
                 self.optimizer.step()
                 self.scheduler.step()
                 self.train_loss.append(loss.item())
-                if epoch_curr >= self.train_curr:
+                if self.step_curr >= self.train_curr:
                     self.log_trainloss(epoch_curr)
                     self.train_loss = []
-                    self.train_curr += self.train_epoch
-                if epoch_curr >= self.val_curr:
+                    self.train_curr += self.train_step
+                if self.step_curr >= self.val_curr:
                     val_metrics = self.validate(val_dataloader)
                     self.log_valmetrics(val_metrics, epoch_curr)
                     if epoch_curr >= self.saveafter_epoch:
@@ -173,7 +177,7 @@ class Trainer:
                             self.model_shell.save_model(self.checkpoint_path)
                             self.was_saved = True
                     self.model_shell.model.train()
-                    self.val_curr += self.val_epoch
+                    self.val_curr += self.val_step
                 self.step_curr += 1
         if self.was_saved:
             self.model_shell.load_model(self.checkpoint_path)
