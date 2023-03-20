@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import random
 from tqdm.auto import tqdm
-from util.tokenizator import tokenize_sentences
+from ..util.tokenizator import tokenize_sentences
 
 
 class Trainer:
