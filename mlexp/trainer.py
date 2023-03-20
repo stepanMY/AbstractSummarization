@@ -152,7 +152,7 @@ class Trainer:
         self.model_shell.model.train()
         for epoch in range(self.epochs):
             for i, batch in enumerate(tqdm(train_dataloader)):
-                epoch_curr = self.step_curr/len(train_dataloader)
+                epoch_curr = (self.step_curr+1)/len(train_dataloader)
                 x, y = list(batch[0]), list(batch[1])
                 loss = self.model_shell.calc_loss(x, y)
                 self.optimizer.zero_grad()
@@ -163,7 +163,7 @@ class Trainer:
                 if epoch_curr >= self.train_curr:
                     self.log_trainloss(epoch_curr)
                     self.train_loss = []
-                    self.train_curr += self.train_curr
+                    self.train_curr += self.train_epoch
                 if epoch_curr >= self.val_curr:
                     val_metrics = self.validate(val_dataloader)
                     self.log_valmetrics(val_metrics, epoch_curr)
@@ -175,3 +175,6 @@ class Trainer:
                     self.model_shell.model.train()
                     self.val_curr += self.val_epoch
                 self.step_curr += 1
+        if self.was_saved:
+            self.model_shell.load_model(self.checkpoint_path)
+        return
