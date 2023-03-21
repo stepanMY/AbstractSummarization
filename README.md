@@ -16,9 +16,9 @@ NLP проект про суммаризацию.
 
 Собранные курсовые я очищал от пропусков, тэгов, табов, переносов строк и пустых строк. После удаления записей с отсутствующими аннотациями в датасете осталось 69 тысяч наблюдений, после удаления слишком коротких аннотаций - 66 тысяч, после фильтрации по языку (оставлял только русский) - 65 тысяч.
 
-[Ноутбук парсинг данных](https://colab.research.google.com/drive/1HhptktsglrPZ-gTdaDmcOfd8jM933zuK);
+[Ноутбук парсинг данных](https://colab.research.google.com/drive/1HhptktsglrPZ-gTdaDmcOfd8jM933zuK)
 
-[Ноутбук предобработка данных](https://colab.research.google.com/drive/1oIpHwZv_5Z4ARI-MbuCbt6j4fCSIgJsw);
+[Ноутбук предобработка данных](https://colab.research.google.com/drive/1oIpHwZv_5Z4ARI-MbuCbt6j4fCSIgJsw)
 ## Осмотр данных
 Провел небольшой обзор данных. Из интересного:
 1. Среднее число слов в заголовке - 9
@@ -48,6 +48,7 @@ ruT5 лучше всего справляется с поставленной з
 Для логирования экспериментов пользовался библиотекой Neptune - [mlexp/logger.py](mlexp/logger.py). Логировал параметры модели и оптимизатора, значения метрик на обучающем, валидационном и тестовых датасетах. Суммарно провел более 70 экспериментов, их результаты описаны в [neptune/experiments.csv](neptune/experiments.csv).
 
 Пример сравнения экспериментов в Neptune:
+
 ![neptune charts](neptune/charts.png)
 
 Пример работы модели:
@@ -57,9 +58,9 @@ ruT5 лучше всего справляется с поставленной з
 >
 > **ruT5**: Усмотрение суда в гражданском и арбитражном процессах
 
-[Ноутбук обучения модели ruT5](https://colab.research.google.com/drive/1rgYv-oRuGJ_f1RtlFwa4kSERe8fZvQe2);
+[Ноутбук обучения модели ruT5](https://colab.research.google.com/drive/1rgYv-oRuGJ_f1RtlFwa4kSERe8fZvQe2)
 
-[Ноутбук обучения модели ruBERT](https://colab.research.google.com/drive/1otgZq1SOZZ_b3cpksHSk3tNzYNKuvEx9);
+[Ноутбук обучения модели ruBERT](https://colab.research.google.com/drive/1otgZq1SOZZ_b3cpksHSk3tNzYNKuvEx9)
 
 ## Выкладка лучшей модели в *продакшн* и разработка веб-приложения
 To be done...
